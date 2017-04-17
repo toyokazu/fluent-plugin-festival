@@ -1,5 +1,5 @@
 # fluent-plugin-festival
-Fluent Input/Output Plugin for FESTIVAL platform
+Fluentd Input Plugin for FESTIVAL platform
 
 ## What is FESTIVAL?
 
