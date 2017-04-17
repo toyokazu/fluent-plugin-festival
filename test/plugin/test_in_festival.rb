@@ -18,22 +18,22 @@ class FestivalInputTest < Test::Unit::TestCase
   sub_test_case "configure" do
     test "tag email password aggregator_id testbed_id resource_id polling_interval" do
       d = create_driver %[
+          tag test
           email hoge@foobar.com
           password login_password
-          aggregator_id IOT-0
-          testbed_id sensinact
-          resource_id hyogo001_barometer-info-valuesfloat
           polling_interval 30
-          <parse>
-            @type json
-          </parse>
+          <resource>
+            path /aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value
+          </resource>
+          <resource>
+            path /aggregators/IOT-0/testbeds/jose/resources/kyoto001_barometer-info-value
+          </resource>
       ]
       assert_equal 'test', d.instance.tag
       assert_equal 'login_password', d.instance.password
-      assert_equal 'IOT-0', d.instance.aggregator_id
-      assert_equal 'sensinact', d.instance.testbed_id
-      assert_equal 'hyogo001_barometer-info-valuesfloat', d.instance.resource_id
       assert_equal 30, d.instance.polling_interval
+      assert_equal '/aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value', d.instance.resources[0].path
+      assert_equal '/aggregators/IOT-0/testbeds/jose/resources/kyoto001_barometer-info-value', d.instance.resources[1].path
     end
   end
 end
