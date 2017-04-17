@@ -50,6 +50,7 @@ Input Plugin can receive events from FESTIVAL EaaS API Server. It can be used vi
   <resource>
     path /aggregators/IOT-0/testbeds/smartsantander/resources/smartsantander_u7jcfa_f3176-chemicalAgentAtmosphericConcentration:airParticles-sensor
   </resource>
+</source>
 ```
 
 - **tag** (required): Tag name appended to the input data inside fluentd network
