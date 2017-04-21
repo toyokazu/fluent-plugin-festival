@@ -16,6 +16,7 @@ fluent-plugin-festival provides input plugin for FESTIVAL platform.
 gem install fluent-plugin-festival
 ```
 
+fluent-plugin-festival requires Ruby version >= 2.1.0.
 
 ## Usage
 
