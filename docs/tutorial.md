@@ -19,7 +19,7 @@ Create a sample configuration file as follows. You need to change festival_porta
 <source>
   @type festival
   tag test1
-  username festival_portal_login_name
+  email festival_portal_registered_email_address
   password festival_portal_password
   polling_interval 30
   <resource>
@@ -33,7 +33,7 @@ Create a sample configuration file as follows. You need to change festival_porta
 <source>
   @type festival
   tag test2
-  username festival_portal_login_name
+  email festival_portal_registered_email_address
   password festival_portal_password
   polling_interval 180
   <resource>
@@ -47,6 +47,7 @@ Create a sample configuration file as follows. You need to change festival_porta
 ---
 ```
 
+You sould not include "current_data" in the resource path.
 
 ## Start fluentd with debug mode
 
