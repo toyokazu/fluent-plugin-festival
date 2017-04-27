@@ -77,9 +77,9 @@ module Fluent::Plugin
           emit(data) if !(data.nil? || data.empty?)
           sleep @polling_interval
         rescue Exception => e
-          $log.error :error => e.to_s
-          $log.debug(e.backtrace.join("\n"))
-          #$log.debug_backtrace(e.backtrace)
+          log.error :error => e.to_s
+          log.debug(e.backtrace.join("\n"))
+          #log.debug_backtrace(e.backtrace)
           sleep @polling_interval
         end
       end
@@ -103,8 +103,8 @@ module Fluent::Plugin
           router.emit(@tag, time, record)
         end
       rescue Exception => e
-        $log.error :error => e.to_s
-        $log.debug_backtrace(e.backtrace)
+        log.error :error => e.to_s
+        log.debug_backtrace(e.backtrace)
       end
     end
 
