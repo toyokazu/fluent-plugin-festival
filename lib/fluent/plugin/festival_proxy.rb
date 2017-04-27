@@ -26,7 +26,7 @@ module Fluent::Plugin
 
     def error_handler(response, message)
       if response.code != "200"
-        log.error :error => message
+        log.error error: message
         log.debug "code: #{response.code}"
         log.debug "message: #{response.message}"
         log.debug "body: #{response.body}"

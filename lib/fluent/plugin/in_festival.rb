@@ -12,7 +12,7 @@ module Fluent::Plugin
     helpers :thread, :compat_parameters
 
     desc 'FESTIVAL EaaS API URI'
-    config_param :api_uri, :string, :default => 'https://api.festival-project.eu'
+    config_param :api_uri, :string, default: 'https://api.festival-project.eu'
     desc 'email (login_name) for FESTIVAL EaaS API'
     config_param :email, :string
     desc 'password for FESTIVAL EaaS API'
@@ -25,7 +25,7 @@ module Fluent::Plugin
     desc 'The tag of the event.'
     config_param :tag, :string
     desc 'Polling interval to get message from FESTIVAL EaaS API'
-    config_param :polling_interval, :integer, :default => 60
+    config_param :polling_interval, :integer, default: 60
 
     # <resoruce> tag can be used for specifying multiple resources in a <source> tag
     # If the user wants to specify different format or polling interval for each resource,
@@ -77,7 +77,7 @@ module Fluent::Plugin
           emit(data) if !(data.nil? || data.empty?)
           sleep @polling_interval
         rescue Exception => e
-          log.error :error => e.to_s
+          log.error error: e.to_s
           log.debug(e.backtrace.join("\n"))
           #log.debug_backtrace(e.backtrace)
           sleep @polling_interval
@@ -103,7 +103,7 @@ module Fluent::Plugin
           router.emit(@tag, time, record)
         end
       rescue Exception => e
-        log.error :error => e.to_s
+        log.error error: e.to_s
         log.debug_backtrace(e.backtrace)
       end
     end
