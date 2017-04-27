@@ -16,7 +16,7 @@ module Fluent::Plugin
     desc 'email (login_name) for FESTIVAL EaaS API'
     config_param :email, :string
     desc 'password for FESTIVAL EaaS API'
-    config_param :password, :string
+    config_param :password, :string, secret: true
     #base.config_param :keep_alive, :integer, :default => 2
     #base.desc 'Start date of historical data'
     #base.config_param :start_date, :string, :default => Time.now.iso8601
