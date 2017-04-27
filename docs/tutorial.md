@@ -23,10 +23,10 @@ Create a sample configuration file as follows. You need to change festival_porta
   password festival_portal_password
   polling_interval 30
   <resource>
-    path /aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value
+    path /aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value/current_data
   </resource>
   <resource>
-    path /aggregators/IOT-0/testbeds/jose/resources/kyoto001_barometer-info-value
+    path /aggregators/IOT-0/testbeds/jose/resources/kyoto001_barometer-info-value/current_data
   </resource>
 </source>
 
@@ -37,7 +37,7 @@ Create a sample configuration file as follows. You need to change festival_porta
   password festival_portal_password
   polling_interval 180
   <resource>
-    path /aggregators/IOT-0/testbeds/smartsantander/resources/smartsantander_u7jcfa_f3176-chemicalAgentAtmosphericConcentration:airParticles-sensor
+    path /aggregators/IOT-0/testbeds/smartsantander/resources/smartsantander_u7jcfa_f3176-chemicalAgentAtmosphericConcentration:airParticles-sensor/current_data
   </resource>
 </source>
 

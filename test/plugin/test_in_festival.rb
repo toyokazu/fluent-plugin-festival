@@ -23,17 +23,17 @@ class FestivalInputTest < Test::Unit::TestCase
           password login_password
           polling_interval 30
           <resource>
-            path /aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value
+            path /aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value/current_data
           </resource>
           <resource>
-            path /aggregators/IOT-0/testbeds/jose/resources/kyoto001_barometer-info-value
+            path /aggregators/IOT-0/testbeds/jose/resources/kyoto001_barometer-info-value/current_data
           </resource>
       ]
       assert_equal 'test', d.instance.tag
       assert_equal 'login_password', d.instance.password
       assert_equal 30, d.instance.polling_interval
-      assert_equal '/aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value', d.instance.resources[0].path
-      assert_equal '/aggregators/IOT-0/testbeds/jose/resources/kyoto001_barometer-info-value', d.instance.resources[1].path
+      assert_equal '/aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value/current_data', d.instance.resources[0].path
+      assert_equal '/aggregators/IOT-0/testbeds/jose/resources/kyoto001_barometer-info-value/current_data', d.instance.resources[1].path
     end
   end
 end

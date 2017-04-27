@@ -35,10 +35,10 @@ Input Plugin can receive events from FESTIVAL EaaS API Server. It can be used vi
   password festival_portal_password
   polling_interval 30
   <resource>
-    path /aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value
+    path /aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value/current_data
   </resource>
   <resource>
-    path /aggregators/IOT-0/testbeds/jose/resources/kyoto001_barometer-info-value
+    path /aggregators/IOT-0/testbeds/jose/resources/kyoto001_barometer-info-value/current_data
   </resource>
 </source>
 
@@ -49,7 +49,7 @@ Input Plugin can receive events from FESTIVAL EaaS API Server. It can be used vi
   password festival_portal_password
   polling_interval 180
   <resource>
-    path /aggregators/IOT-0/testbeds/smartsantander/resources/smartsantander_u7jcfa_f3176-chemicalAgentAtmosphericConcentration:airParticles-sensor
+    path /aggregators/IOT-0/testbeds/smartsantander/resources/smartsantander_u7jcfa_f3176-chemicalAgentAtmosphericConcentration:airParticles-sensor/current_data
   </resource>
 </source>
 ```
@@ -59,13 +59,14 @@ Input Plugin can receive events from FESTIVAL EaaS API Server. It can be used vi
 - **password** (required): password for the login_name
 - **polling_interval** (optional): Polling interval (seconds) for accessing EaaS API (default: 60 seconds)
 - **resource** (at least one entry is required): The target resources to obtain sensor data. multiple resources can be specified by multiple <resource> tags. If a user wants to specify different polling interval for each resource, it must be specified different <source> tags.
-  - **path** (at least one entry is required): The target resource path name should be specified. The pathname should specify only under aggregator part and target data type, i.e. current_data or historical_data, should be omitted
- (e.g. /aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value).
+  - **path** (at least one entry is required): The target resource path name should be specified. The pathname should specify only under aggregator part and target data type. Currently, only "current_data" type is supported.
+ (e.g. /aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value/current_data).
 
 If the time field is empty, this plugin automatically set the finished time of data downloading. If multiple sensor data specified simultaneously, the time difference may become larger than single datum case. A sample data format is shown below.
 
 ```
 {
+  "resourceName": "/aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value/current_data",
   "dataValue": "1001.16"
 }
 ```

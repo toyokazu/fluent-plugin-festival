@@ -85,10 +85,10 @@ module Fluent::Plugin
     #  end
     #end
 
-    def get_data_request(path, type)
+    def get_data_request(path)
       #get_data_req = @uri + target_path(type)
 
-      get_data_req = @uri + Pathname("/festival/eaas/experimentation/#{path}/#{type}").cleanpath.to_s
+      get_data_req = @uri + Pathname("/festival/eaas/experimentation/#{path}").cleanpath.to_s
       #get_data_req.query = URI.encode_www_form(get_data_params)
       $log.debug "#{get_data_req}"
       # currently time window is automatically updated
@@ -104,7 +104,11 @@ module Fluent::Plugin
       }
     end
 
-    def get_current_data
+    def resource_type(path)
+      Pathname(path).basename.to_s
+    end
+
+    def get_data
       if !valid_session?
         return nil if create_session.nil?
         $log.debug "session #{@session} created."
@@ -113,11 +117,24 @@ module Fluent::Plugin
       #require 'pry-byebug'
       $log.debug "@resources: #{@resources.inspect}"
       @resources.each do |resource|
-        $log.debug "get_current_data: request #{get_data_request(resource.path, "current_data")}, #{get_data_header.inspect}"
-        get_current_data_res = @https.get(get_data_request(resource.path, "current_data"), get_data_header)
-        return nil if !error_handler(get_current_data_res,"get_data failed.")
-        $log.debug "get_current_data: #{get_current_data_res.body}"
-        data << {"dataValue": JSON.parse(get_current_data_res.body)["dataValue"]}
+        case resource_type(resource.path)
+        when "current_data" then
+          $log.debug "get_data: request #{get_data_request(resource.path)}, #{get_data_header.inspect}"
+          get_data_res = @https.get(get_data_request(resource.path), get_data_header)
+          return nil if !error_handler(get_data_res,"get_data failed.")
+          $log.debug "get_data: #{get_data_res.body}"
+          data << {
+            "resourceName": resource.path,
+            "dataValue": JSON.parse(get_data_res.body)["dataValue"]
+          }
+        when "historical_data" then
+          $log.error "historical_data is not supported yet"
+          return nil
+        else
+          $log.error "The other resource type is not supported yet"
+          $log.error "resource_type: #{resource_type(resource.path)}"
+          return nil
+        end
       end
       if data.size > 1
         return data

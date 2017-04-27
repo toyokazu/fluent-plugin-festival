@@ -36,7 +36,7 @@ module Fluent::Plugin
     # A resource URI example
     # https://api.festival-project.eu/festival/eaas/experimentation/aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value/current_data
     # <resource>
-    #   path /aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value
+    #   path /aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value/current_data
     # </resource>
     #
     # Resource ID case (not supported now):
@@ -49,7 +49,7 @@ module Fluent::Plugin
     # If you want to specify historical data
     config_section :resource, param_name: :resources, required: true, multi: true do
       desc 'Resource path'
-      # e.g. /aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value
+      # e.g. /aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value/current_data
       config_param :path, :string
       # e.g. IT-0, OD-0, IOT-0, LL-0
       #base.config_param :aggregator_id, :string, :default => nil
@@ -73,7 +73,7 @@ module Fluent::Plugin
     def get_loop
       while (true)
         begin
-          data = get_current_data
+          data = get_data
           emit(data) if !(data.nil? || data.empty?)
           sleep @polling_interval
         rescue Exception => e
