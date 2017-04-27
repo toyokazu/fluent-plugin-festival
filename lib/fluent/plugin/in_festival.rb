@@ -9,7 +9,7 @@ module Fluent::Plugin
 
     Fluent::Plugin.register_input('festival', self)
 
-    helpers :thread, :compat_parameters
+    helpers :timer
 
     desc 'FESTIVAL EaaS API URI'
     config_param :api_uri, :string, :default => 'https://api.festival-project.eu'
@@ -67,20 +67,14 @@ module Fluent::Plugin
       #raise StandardError.new if @tag.nil?
       super
       start_proxy
-      @proxy_thread = Thread.new(&method(:get_loop))
-    end
-
-    def get_loop
-      while (true)
+      timer_execute(:in_festival, @polling_interval) do
         begin
           data = get_data
           emit(data) if !(data.nil? || data.empty?)
-          sleep @polling_interval
         rescue Exception => e
           log.error :error => e.to_s
           log.debug(e.backtrace.join("\n"))
-          #log.debug_backtrace(e.backtrace)
-          sleep @polling_interval
+          log.trace_backtrace(e.backtrace)
         end
       end
     end
@@ -109,7 +103,6 @@ module Fluent::Plugin
     end
 
     def shutdown
-      @proxy_thread.kill
       shutdown_proxy
       super
     end
