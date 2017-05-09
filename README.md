@@ -31,7 +31,7 @@ Input Plugin can receive events from FESTIVAL EaaS API Server. It can be used vi
 <source>
   @type festival
   tag tag_name
-  username festival_portal_login_name
+  email festival_portal_login_name
   password festival_portal_password
   polling_interval 30
   <resource>
@@ -45,7 +45,7 @@ Input Plugin can receive events from FESTIVAL EaaS API Server. It can be used vi
 <source>
   @type festival
   tag tag_name
-  username festival_portal_login_name
+  email festival_portal_login_name
   password festival_portal_password
   polling_interval 180
   <resource>
@@ -55,7 +55,7 @@ Input Plugin can receive events from FESTIVAL EaaS API Server. It can be used vi
 ```
 
 - **tag** (required): Tag name appended to the input data inside fluentd network
-- **login_name** (required): login_name to login https://experiments.festival-project.eu/
+- **email** (required): email address (login name) to login https://experiments.festival-project.eu/
 - **password** (required): password for the login_name
 - **polling_interval** (optional): Polling interval (seconds) for accessing EaaS API (default: 60 seconds)
 - **resource** (at least one entry is required): The target resources to obtain sensor data. multiple resources can be specified by multiple <resource> tags. If a user wants to specify different polling interval for each resource, it must be specified different <source> tags.

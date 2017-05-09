@@ -17,11 +17,6 @@ module Fluent::Plugin
     config_param :email, :string
     desc 'password for FESTIVAL EaaS API'
     config_param :password, :string, secret: true
-    #base.config_param :keep_alive, :integer, :default => 2
-    #base.desc 'Start date of historical data'
-    #base.config_param :start_date, :string, :default => Time.now.iso8601
-    #base.desc 'End date of historical data'
-    #base.config_param :end_date, :string, :default => Time.now.iso8601
     desc 'The tag of the event.'
     config_param :tag, :string
     desc 'Polling interval to get message from FESTIVAL EaaS API'
@@ -73,8 +68,7 @@ module Fluent::Plugin
           emit(data) if !(data.nil? || data.empty?)
         rescue Exception => e
           log.error error: e.to_s
-          log.debug(e.backtrace.join("\n"))
-          log.trace_backtrace(e.backtrace)
+          log.debug_backtrace(e.backtrace)
         end
       end
     end
