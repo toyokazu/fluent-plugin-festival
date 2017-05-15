@@ -35,10 +35,10 @@ Input Plugin can receive events from FESTIVAL EaaS API Server. It can be used vi
   password festival_portal_password
   polling_interval 30
   <resource>
-    path /aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value/current_data
+    path /aggregators/IOT-0/testbeds/jose/resources/train_station_kyoto001_humidity-info-value/current_data
   </resource>
   <resource>
-    path /aggregators/IOT-0/testbeds/jose/resources/kyoto001_barometer-info-value/current_data
+    path /aggregators/IOT-0/testbeds/jose/resources/train_station_kyoto001_barometer-info-value/current_data
   </resource>
 </source>
 
@@ -60,7 +60,7 @@ Input Plugin can receive events from FESTIVAL EaaS API Server. It can be used vi
 - **polling_interval** (optional): Polling interval (seconds) for accessing EaaS API (default: 60 seconds)
 - **resource** (at least one entry is required): The target resources to obtain sensor data. multiple resources can be specified by multiple <resource> tags. If a user wants to specify different polling interval for each resource, it must be specified different <source> tags.
   - **path** (at least one entry is required): The target resource path name should be specified. The pathname should specify only under aggregator part and target data type. Currently, only "current_data" type is supported.
- (e.g. /aggregators/IOT-0/testbeds/jose/resources/hyogo001_barometer-info-value/current_data).
+ (e.g. /aggregators/IOT-0/testbeds/jose/resources/train_station_hyogo001_barometer-info-value/current_data).
 
 If the time field is empty, this plugin automatically set the finished time of data downloading. If multiple sensor data specified simultaneously, the time difference may become larger than single datum case. A sample data format is shown below.
 

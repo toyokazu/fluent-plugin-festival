@@ -121,7 +121,7 @@ module Fluent::Plugin
         when "current_data" then
           log.debug "get_data: request #{get_data_request(resource.path)}, #{get_data_header.inspect}"
           get_data_res = @https.get(get_data_request(resource.path), get_data_header)
-          return nil if !error_handler(get_data_res,"get_data failed.")
+          next if !error_handler(get_data_res,"get_data failed.")
           log.debug "get_data: #{get_data_res.body}"
           data << {
             "resourceName": resource.path,
@@ -129,11 +129,11 @@ module Fluent::Plugin
           }
         when "historical_data" then
           log.error "historical_data is not supported yet"
-          return nil
+          next
         else
           log.error "The other resource type is not supported yet"
           log.error "resource_type: #{resource_type(resource.path)}"
-          return nil
+          next
         end
       end
       if data.size > 1
