@@ -99,13 +99,34 @@ module Fluent::Plugin
     def get_data_header
       {
         "Accept": "application/json",
-        "x-nick-name": @email,
         "X-Auth-Token": @session["access_token"]
       }
     end
 
     def resource_type(path)
       Pathname(path).basename.to_s
+    end
+
+    def resource_path(path)
+      Pathname(path).dirname.to_s
+    end
+
+    def add_location(result, path)
+      if @require_location
+        log.debug "get_data (location): request #{get_data_request(resource_path(path))}, #{get_data_header.inspect}"
+        get_sensor_res = @https.get(get_data_request(resource_path(path)), get_data_header)
+        return result if !error_handler(get_sensor_res, "get_data failed.")
+        log.debug "get_data: #{get_sensor_res.body}"
+        sensor = JSON.parse(get_sensor_res.body)
+        # TODO: arbitrary geographicArea type should be supported
+        return result.merge({
+          "location": {
+            "lon": JSON.parse(sensor["location"]["geographicArea"])["coordinates"][0],
+            "lat": JSON.parse(sensor["location"]["geographicArea"])["coordinates"][1]
+          }
+        })
+      end
+      return result
     end
 
     def get_data
@@ -123,10 +144,11 @@ module Fluent::Plugin
           get_data_res = @https.get(get_data_request(resource.path), get_data_header)
           next if !error_handler(get_data_res,"get_data failed.")
           log.debug "get_data: #{get_data_res.body}"
-          data << {
+          result = {
             "resourceName": resource.path,
             "dataValue": JSON.parse(get_data_res.body)["dataValue"]
           }
+          data << add_location(result, resource.path)
         when "historical_data" then
           log.error "historical_data is not supported yet"
           next
