@@ -81,7 +81,7 @@ vi train_station-mapping.json
         "format": "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
       },
       "resourceName": {
-        "type": "string"
+        "type": "keyword"
       },
       "dataValue": {
         "type": "double"
