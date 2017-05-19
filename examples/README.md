@@ -71,10 +71,10 @@ In the followings, how to store FESTIVAL platform data into Elasticsearch will b
 First of all, you need to create mapping in Elasticsearch. An Elasticsearch server is assumed to run in localhost.
 
 ```
-vi train_station-mapping.json
+vi iot_gateway-mapping.json
 ---
 {
-  "train_station": {
+  "iot_gateway": {
     "properties": {
       "timestamp": {
         "type": "date",
@@ -92,7 +92,7 @@ vi train_station-mapping.json
 ---
 
 curl -XPUT 'http://localhost:9200/festival'
-curl -XPUT 'http://localhost:9200/festival/train_station/_mapping' -d @train_station-mapping.json
+curl -XPUT 'http://localhost:9200/festival/iot_gateway/_mapping' -d @iot_gateway-mapping.json
 ```
 
 ```
@@ -134,7 +134,7 @@ curl -XPUT 'http://localhost:9200/festival/train_station/_mapping' -d @train_sta
       host localhost
       port 9200
       index_name festival
-      type_name train_station
+      type_name iot_gateway
       logstash_format false
       include_tag_key true
       time_key timestamp
