@@ -111,10 +111,10 @@ module Fluent::Plugin
       Pathname(path).dirname.to_s
     end
 
-    def add_location(result, path)
-      if @require_location
-        log.debug "get_data (location): request #{get_data_request(resource_path(path))}, #{get_data_header.inspect}"
-        get_sensor_res = @https.get(get_data_request(resource_path(path)), get_data_header)
+    def add_location(result, resource)
+      if resource.require_location
+        log.debug "get_data (location): request #{get_data_request(resource_path(resource.path))}, #{get_data_header.inspect}"
+        get_sensor_res = @https.get(get_data_request(resource_path(resource.path)), get_data_header)
         return result if !error_handler(get_sensor_res, "get_data failed.")
         log.debug "get_data: #{get_sensor_res.body}"
         sensor = JSON.parse(get_sensor_res.body)
@@ -123,6 +123,14 @@ module Fluent::Plugin
           "location": {
             "lon": JSON.parse(sensor["location"]["geographicArea"])["coordinates"][0],
             "lat": JSON.parse(sensor["location"]["geographicArea"])["coordinates"][1]
+          }
+        })
+      elsif !resource.fixed_location.nil?
+        log.debug "set fixed_location: #{resource.fixed_location.inspect}"
+        return result.merge({
+          "location": {
+            "lon": resource.fixed_location[0].to_f,
+            "lat": resource.fixed_location[1].to_f
           }
         })
       end
@@ -148,7 +156,7 @@ module Fluent::Plugin
             "resourceName": resource.path,
             "dataValue": JSON.parse(get_data_res.body)["dataValue"]
           }
-          data << add_location(result, resource.path)
+          data << add_location(result, resource)
         when "historical_data" then
           log.error "historical_data is not supported yet"
           next

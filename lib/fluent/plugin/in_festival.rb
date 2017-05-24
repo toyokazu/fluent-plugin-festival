@@ -21,8 +21,6 @@ module Fluent::Plugin
     config_param :tag, :string
     desc 'Polling interval to get message from FESTIVAL EaaS API'
     config_param :polling_interval, :integer, default: 60
-    desc 'Require sensor location'
-    config_param :require_location, :bool, default: false
 
     # <resoruce> tag can be used for specifying multiple resources in a <source> tag
     # If the user wants to specify different format or polling interval for each resource,
@@ -54,6 +52,10 @@ module Fluent::Plugin
       #base.config_param :testbed_id, :string, :default => nil
       # e.g. airsensors_firenze-airsensors-location, hyogo001_barometer-info-valuesfloat
       #base.config_param :resource_id, :string, :default => nil
+      desc 'Require sensor location'
+      config_param :require_location, :bool, default: false
+      desc 'Fixed sensor location'
+      config_param :fixed_location, :array, default: nil
     end
 
     def configure(conf)

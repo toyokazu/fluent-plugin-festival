@@ -24,9 +24,11 @@ Create a sample configuration file as follows. You need to change festival_porta
   polling_interval 30
   <resource>
     path /aggregators/IOT-0/testbeds/jose/resources/train_station_kyoto001_humidity-info-value/current_data
+    fixed_location [135.0, 35.0]
   </resource>
   <resource>
     path /aggregators/IOT-0/testbeds/jose/resources/train_station_kyoto001_barometer-info-value/current_data
+    require_location
   </resource>
 </source>
 
@@ -106,9 +108,11 @@ curl -XPUT 'http://localhost:9200/festival/iot_gateway/_mapping' -d @iot_gateway
   polling_interval 30
   <resource>
     path /aggregators/IOT-0/testbeds/jose/resources/train_station_kyoto001_humidity-info-value/current_data
+    fixed_location [135.0, 35.0]
   </resource>
   <resource>
     path /aggregators/IOT-0/testbeds/jose/resources/train_station_kyoto001_barometer-info-value/current_data
+    require_location
   </resource>
   @label @test0
 </source>
@@ -116,8 +120,8 @@ curl -XPUT 'http://localhost:9200/festival/iot_gateway/_mapping' -d @iot_gateway
 <label @test0>
   <filter test*>
     @type record_transformer
-    enable_ruby true
-    auto_typecast true
+    enable_ruby
+    auto_typecast
     <record>
       timestamp   ${time.strftime("%FT%T.%L%:z")}
     </record>
