@@ -87,6 +87,9 @@ vi iot_gateway-mapping.json
       },
       "dataValue": {
         "type": "double"
+      },
+      "location": {
+        "type": "geo_point"
       }
     }
   }
