@@ -5,6 +5,7 @@ module Fluent::Plugin
     require 'net/http'
     require 'json'
     require 'time'
+    require 'webrick/httputils'
 
     class FestivalProxyError
     end
@@ -88,7 +89,7 @@ module Fluent::Plugin
     def get_data_request(path)
       #get_data_req = @uri + target_path(type)
 
-      get_data_req = @uri + Pathname("/festival/eaas/experimentation/#{path}").cleanpath.to_s
+      get_data_req = @uri + Pathname("/festival/eaas/experimentation/#{WEBrick::HTTPUtils.escape(path)}").cleanpath.to_s
       #get_data_req.query = URI.encode_www_form(get_data_params)
       log.debug "#{get_data_req}"
       # currently time window is automatically updated
