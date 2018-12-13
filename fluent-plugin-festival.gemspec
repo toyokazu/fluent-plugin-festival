@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "fluent-plugin-festival"
-  spec.version       = "0.0.13"
+  spec.version       = "0.0.14"
   spec.authors       = ["Toyokazu Akiyama"]
   spec.email         = ["toyokazu@gmail.com"]
 

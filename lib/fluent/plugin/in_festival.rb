@@ -23,6 +23,8 @@ module Fluent::Plugin
     config_param :tag, :string
     desc 'Polling interval to get message from FESTIVAL EaaS API'
     config_param :polling_interval, :integer, default: 60
+    desc 'Use timestamp provided by a sensor (for sensinact only).'
+    config_param :use_sensor_time, :bool, default: false
 
     # <resoruce> tag can be used for specifying multiple resources in a <source> tag
     # If the user wants to specify different format or polling interval for each resource,

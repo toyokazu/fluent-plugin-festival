@@ -183,8 +183,8 @@ module Fluent::Plugin
               {
                 "resourceName": resource.path,
                 "dataValue": JSON.parse(get_data_res.body)["response"]["value"],
-                "timestamp": JSON.parse(get_data_res.body)["response"]["timestamp"]
-              }
+                "timestamp": (Time.at(JSON.parse(get_data_res.body)["response"]["timestamp"].to_f/1000, JSON.parse(get_data_res.body)["response"]["timestamp"].to_f%1000*1000) if @use_sensor_time)
+              }.reject {|k, v| v.nil?}
             else
               return nil
             end
