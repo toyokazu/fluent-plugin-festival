@@ -89,7 +89,13 @@ module Fluent::Plugin
     def get_data_request(path)
       #get_data_req = @uri + target_path(type)
 
-      get_data_req = @uri + Pathname("/festival/eaas/experimentation/#{WEBrick::HTTPUtils.escape(path)}").cleanpath.to_s
+      get_data_req = @uri +
+        case @api_type
+        when 'sensinact' 
+          Pathname("/sensinact/providers/#{WEBrick::HTTPUtils.escape(path)}").cleanpath.to_s
+        else # default (festival)
+          Pathname("/festival/eaas/experimentation/#{WEBrick::HTTPUtils.escape(path)}").cleanpath.to_s
+        end
       #get_data_req.query = URI.encode_www_form(get_data_params)
       log.debug "#{get_data_req}"
       # currently time window is automatically updated
@@ -98,18 +104,31 @@ module Fluent::Plugin
     end
 
     def get_data_header
-      {
-        "Accept": "application/json",
-        "X-Auth-Token": @session["access_token"]
+      header = {
+        "Accept": "application/json"
       }
+      if @api_type == 'festival'
+        return header.merge("X-Auth-Token": @session["access_token"])
+      end
+      header
     end
 
     def resource_type(path)
-      Pathname(path).basename.to_s
+      case @api_type
+      when 'sensinact'
+        "current_data"
+      else
+        Pathname(path).basename.to_s
+      end
     end
 
     def resource_path(path)
-      Pathname(path).dirname.to_s
+      case @api_type
+      when 'sensinact'
+        path
+      else
+        Pathname(path).dirname.to_s
+      end
     end
 
     def add_location(result, resource)
@@ -139,7 +158,7 @@ module Fluent::Plugin
     end
 
     def get_data
-      if !valid_session?
+      if !valid_session? && @api_type == 'festival'
         return nil if create_session.nil?
         log.debug "session #{@session} created."
       end
@@ -153,10 +172,22 @@ module Fluent::Plugin
           get_data_res = @https.get(get_data_request(resource.path), get_data_header)
           next if !error_handler(get_data_res,"get_data failed.")
           log.debug "get_data: #{get_data_res.body}"
-          result = {
-            "resourceName": resource.path,
-            "dataValue": JSON.parse(get_data_res.body)["dataValue"]
-          }
+          result = 
+            case @api_type
+            when 'festival'
+              {
+                "resourceName": resource.path,
+                "dataValue": JSON.parse(get_data_res.body)["dataValue"]
+              }
+            when 'sensinact'
+              {
+                "resourceName": resource.path,
+                "dataValue": JSON.parse(get_data_res.body)["response"]["value"],
+                "timestamp": JSON.parse(get_data_res.body)["response"]["timestamp"]
+              }
+            else
+              return nil
+            end
           data << add_location(result, resource)
         when "historical_data" then
           log.error "historical_data is not supported yet"

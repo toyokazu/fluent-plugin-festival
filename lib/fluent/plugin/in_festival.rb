@@ -13,6 +13,8 @@ module Fluent::Plugin
 
     desc 'FESTIVAL EaaS API URI'
     config_param :api_uri, :string, default: 'https://api.festival-project.eu'
+    desc 'API Type (festival or sensinact)'
+    config_param :api_type, :string, default: 'festival'
     desc 'email (login_name) for FESTIVAL EaaS API'
     config_param :email, :string
     desc 'password for FESTIVAL EaaS API'
