@@ -101,12 +101,14 @@ curl -H "Content-Type: application/json" -XPUT 'http://localhost:9200/festival/i
 ```
 
 For api_type: sensinact
+
+```
 % vi fluent.conf
 ---
 <source>
   @type festival
   tag test1
-  api_uri http://sensinact.ddns.net:8080
+  api_uri http://example.sensinact.uri:8080
   api_type sensinact
   #use_sensor_time
   email dummy@example.com
@@ -157,6 +159,7 @@ For api_type: sensinact
   </match>
 </label>
 ---
+```
 
 For api_type: festival
 
