@@ -97,8 +97,68 @@ vi iot_gateway-mapping.json
 ---
 
 curl -XPUT 'http://localhost:9200/festival'
-curl -XPUT 'http://localhost:9200/festival/iot_gateway/_mapping' -d @iot_gateway-mapping.json
+curl -H "Content-Type: application/json" -XPUT 'http://localhost:9200/festival/iot_gateway/_mapping' -d @iot_gateway-mapping.json
 ```
+
+For api_type: sensinact
+% vi fluent.conf
+---
+<source>
+  @type festival
+  tag test1
+  api_uri http://sensinact.ddns.net:8080
+  api_type sensinact
+  #use_sensor_time
+  email dummy@example.com
+  password dummy_password
+  polling_interval 10
+  <resource>
+    path carsensor011_100Hz/services/data/resources/PM2.5/GET
+    fixed_location [135.0, 35.0]
+  </resource>
+  <resource>
+    path carsensor081_100Hz/services/data/resources/PM2.5/GET
+    fixed_location [135.0, 35.0]
+  </resource>
+  @label @test0
+</source>
+
+<label @test0>
+  <filter test*>
+    @type record_transformer
+    enable_ruby
+    auto_typecast
+    <record>
+      timestamp   ${time.strftime("%FT%T.%L%:z")}
+    </record>
+  </filter>
+
+  # If you want to output the messages not only into Elasticsearch
+  # but also into standard output, please enable comment out lines.
+  <match test*>
+    @type copy
+    <store>
+      @type elasticsearch
+      host localhost
+      port 9200
+      index_name festival
+      type_name iot_gateway
+      logstash_format false
+      include_tag_key true
+      time_key timestamp
+      <buffer tag>
+        flush_thread_count 4
+        flush_interval 30s
+      </buffer>
+    </store>
+    <store>
+      @type stdout
+    </store>
+  </match>
+</label>
+---
+
+For api_type: festival
 
 ```
 % vi fluent.conf
