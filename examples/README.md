@@ -6,12 +6,49 @@
 gem install fluent-plugin-festival
 ```
 
-fluentd 0.14.x will be installed automatically.
+fluentd will be installed automatically.
 
 
 ## Create a sample configuration file
 
-Create a sample configuration file as follows. You need to change festival_portal_login_name and festival_portal_password to your account information.
+Create a sample configuration file as follows. For sensinact api_type case, you can specify dummy username and password. 
+
+For api_type: sensinact
+
+```
+% vi fluent.conf
+---
+<source>
+  @type festival
+  tag test1
+  api_uri http://example.sensinact.uri:8080
+  api_type sensinact
+  #use_sensor_time
+  email dummy@example.com
+  password dummy_password
+  polling_interval 10
+  <resource>
+    path carsensor011_100Hz/services/data/resources/PM2.5/GET
+    fixed_location [135.0, 35.0]
+  </resource>
+  <resource>
+    path carsensor081_100Hz/services/data/resources/PM2.5/GET
+    fixed_location [135.0, 35.0]
+  </resource>
+  @label @test0
+</source>
+
+<label @test0>
+  <match test*>
+    @type stdout
+  </match>
+</label>
+---
+```
+
+For festival api_type case, You need to change festival_portal_login_name and festival_portal_password to your account information.
+
+For api_type: festival
 
 ```
 % vi fluent.conf
