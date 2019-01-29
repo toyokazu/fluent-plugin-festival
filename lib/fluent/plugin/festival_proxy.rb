@@ -33,6 +33,15 @@ module Fluent::Plugin
         log.debug "body: #{response.body}"
         return false
       end
+      if @api_type == "sensinact"
+        body = JSON.parse(response.body)
+        if body["statusCode"] != 200
+          log.error error: message
+          log.debug "code: #{body["statusCode"]}"
+          log.debug "body: #{response.body}"
+          return false
+        end
+      end
       return true
     end
 
